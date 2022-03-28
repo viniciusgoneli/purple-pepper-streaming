@@ -5,6 +5,12 @@
 }
 
 :root {
+  --color-primary: #9A01FF;
+  --color-secundary: #4002EB;
   font-size: 10px;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+button:hover{
+  cursor: pointer;
 }

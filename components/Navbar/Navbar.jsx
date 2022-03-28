@@ -1,23 +1,19 @@
-import Image from 'next/image'
-import pepperImage from './../../public/images/pepper.svg'
-import searchIcon from './../../public/icons/search.svg'
-import personIcon from './../../public/icons/person.svg'
-
+import styles from './../../styles/Navbar.module.css'
 
 export default function Navbar(){
     return(
-        <nav>
-            <div>
-                <Image src={pepperImage} alt='Purple pepper' width={60} height={60} />
-                <ul>
-                    <li>Home</li>
-                    <li>Categories</li>
-                    <li>My area</li>
+        <nav className={styles.navbar}>
+            <div className={styles.leftContent}>
+                <a className={`${styles.backgroundImage} ${styles.logoImg}`} href='#'></a>
+                <ul className={styles.menuList}>
+                    <li className={styles.menuListItem}><a className={styles.menuLink} href='#'>Home</a></li>
+                    <li className={styles.menuListItem}><a className={styles.menuLink} href='#'>Categories</a></li>
+                    <li className={styles.menuListItem}><a className={styles.menuLink} href='#'>My area</a></li>
                 </ul>
             </div>
-            <div>
-                <Image src={searchIcon} width={36} height={36}/>
-                <Image src={personIcon} width={36} height={36}/>
+            <div className={styles.rightContent}>
+                <button className={`${styles.backgroundImage} ${styles.icon} ${styles.searchBtn}`}></button>
+                <button className={`${styles.backgroundImage} ${styles.icon} ${styles.accountBtn}`}></button>
             </div>
         </nav>
     )

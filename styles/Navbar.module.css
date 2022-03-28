@@ -1,0 +1,71 @@
+/* GENERAL */
+
+.backgroundImage{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icon {
+    width: 3.6rem;
+    height: 3.6rem;
+}
+
+/* SPECIFIC */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem;
+    background-color: var(--color-secundary);
+    height: 6rem;
+}
+
+.logoImg{
+    width: 4.8rem;
+    height: 4.8rem;
+    background-image: url('./../public/images/pepper.svg');
+}
+
+.leftContent {
+    display: flex;
+    align-items: center;
+}
+
+.rightContent{
+    display: flex;
+}
+
+.menuList{
+    display: flex;
+    list-style: none;
+}
+
+.menuListItem{
+    margin-left: 2rem;
+}
+
+.menuLink {
+    text-decoration: none;
+    color: white;
+    font-size: 1.4rem;
+    transition: color 0.3s;
+}
+
+.menuLink:hover {
+    color: rgb(207, 206, 206);
+}
+
+.searchBtn{
+    background-image: url('./../public/icons/search.svg');
+    background-color: transparent;
+    border: none;
+}
+
+.accountBtn{
+    background-image: url('./../public/icons/person.svg');
+    background-color: transparent;
+    border: none;
+    margin-left: 1rem;
+}
