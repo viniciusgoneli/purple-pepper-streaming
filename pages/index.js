@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Navbar from './../components/Navbar/Navbar.jsx'
+import MoviesCatalogue from './../components/MoviesCatalogue/MoviesCatalogue.jsx'
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </Head>
       <Navbar />
+      <MoviesCatalogue />
     </>
   )
 }
