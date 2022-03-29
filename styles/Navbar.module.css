@@ -48,13 +48,13 @@
 
 .menuLink {
     text-decoration: none;
-    color: white;
+    color: rgb(224, 224, 224);
     font-size: 1.4rem;
     transition: color 0.3s;
 }
 
 .menuLink:hover {
-    color: rgb(207, 206, 206);
+    color: white;
 }
 
 .searchBtn{
