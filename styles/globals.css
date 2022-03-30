@@ -9,7 +9,13 @@
   font-family: Arial, Helvetica, sans-serif;
   --color-primary: #9A01FF;
   --color-secundary: #252e39;
+  --background-color: #3a4858;
   --navbar-height: 6.0rem;
+}
+
+body{
+  overflow-x: hidden;
+  background-color: var(--background-color);
 }
 
 button:hover{

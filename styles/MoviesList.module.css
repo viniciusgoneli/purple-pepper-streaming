@@ -1,0 +1,24 @@
+.container{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.genreTitle{
+    color: white;
+    padding-left: 4rem;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.moviesWrapper{
+    margin-left: 4rem;
+}
+
+.moviesList{
+    display: flex;
+    list-style: none;
+}
+
+.movie{
+    margin-right: 1rem;
+}
