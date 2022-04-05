@@ -11,7 +11,7 @@ export default function Home(props) {
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </Head>
       <Navbar />
-      <MoviesCatalogue apiInfo={props.apiInfo}/>
+      <MoviesCatalogue apiInfo={props.apiInfo} genresJson={props.genresJson}/>
     </>
   )
 }
@@ -21,6 +21,9 @@ export async function getStaticProps(){
   const apiBaseUrl = process.env.API_BASE_URL
   const imgBaseUrl = process.env.API_IMG_BASE_URL;
   const apiKey = process.env.API_KEY;
+
+  const genresResponse = await fetch(`${apiBaseUrl}/genre/movie/list?api_key=${apiKey}`);
+  const genresJson = await genresResponse.json();
   
   return {
     props: {
@@ -28,7 +31,8 @@ export async function getStaticProps(){
         apiKey,
         apiBaseUrl,
         imgBaseUrl
-      }
+      },
+      genresJson
     }
   }
 }
