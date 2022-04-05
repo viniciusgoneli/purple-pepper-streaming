@@ -11,22 +11,24 @@ export default function Home(props) {
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </Head>
       <Navbar />
-      <MoviesCatalogue apiKey={props.apiKey}/>
+      <MoviesCatalogue apiInfo={props.apiInfo}/>
     </>
   )
 }
 
 export async function getStaticProps(){
 
-  const baseUrlApi = process.env.API_BASE_URL;
+  const apiBaseUrl = process.env.API_BASE_URL
   const imgBaseUrl = process.env.API_IMG_BASE_URL;
   const apiKey = process.env.API_KEY;
-
+  
   return {
     props: {
-      apiKey,
-      baseUrlApi,
-      imgBaseUrl
+      apiInfo: {
+        apiKey,
+        apiBaseUrl,
+        imgBaseUrl
+      }
     }
   }
 }
