@@ -11,6 +11,7 @@
 }
 
 .moviesWrapper{
+    position: relative;
     margin-left: 4rem;
 }
 
@@ -21,4 +22,25 @@
 
 .movie{
     margin-right: 1rem;
+}
+
+.arrowContainer{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100%;
+    z-index: 10;
+}
+
+.arrowContainer:hover{
+    cursor: pointer;
+}
+
+.leftArrowContainer{
+    left: 0;
+}
+
+.rightArrowContainer{
+    right: 0;
 }

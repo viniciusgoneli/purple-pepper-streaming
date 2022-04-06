@@ -1,6 +1,8 @@
 import styles from './../../styles/MoviesList.module.css'
 import Image from 'next/image'
 import defaultImage from './../../public/images/default-movie-img.jpg'
+import rightArrow from './../../public/icons/right-arrow.svg'
+import leftArrow from './../../public/icons/left-arrow.svg'
 import useSWR from 'swr';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
@@ -37,6 +39,12 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
         <div className={styles.container}>
             <h2 className={styles.genreTitle}>{genreName}</h2>
             <div className={styles.moviesWrapper}>
+                <div className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
+                    <Image layout='fixed' src={leftArrow} width={60} height={60} />
+                </div>
+                <div className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
+                    <Image layout='fixed' src={rightArrow} width={60} height={60} />
+                </div>
                 <ul className={styles.moviesList}>
                     { (!data || error) ? defaultList : movieList }
                 </ul>
