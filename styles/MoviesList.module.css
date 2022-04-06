@@ -10,9 +10,14 @@
     margin-bottom: 1rem;
 }
 
-.moviesWrapper{
+.moviesContainer{
     position: relative;
     margin-left: 4rem;
+    height: 500px;
+}
+
+.moviesSlider{
+    position: absolute;
 }
 
 .moviesList{

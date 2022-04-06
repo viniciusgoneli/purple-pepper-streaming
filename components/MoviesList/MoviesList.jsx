@@ -38,16 +38,18 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
     return(
         <div className={styles.container}>
             <h2 className={styles.genreTitle}>{genreName}</h2>
-            <div className={styles.moviesWrapper}>
-                <div className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
-                    <Image layout='fixed' src={leftArrow} width={60} height={60} />
+            <div className={styles.moviesContainer}>
+                <div className={styles.moviesSlider}>
+                    <div className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
+                        <Image layout='fixed' src={leftArrow} width={60} height={60} />
+                    </div>
+                    <div className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
+                        <Image layout='fixed' src={rightArrow} width={60} height={60} />
+                    </div>
+                    <ul className={styles.moviesList}>
+                        { (!data || error) ? defaultList : movieList }
+                    </ul>
                 </div>
-                <div className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
-                    <Image layout='fixed' src={rightArrow} width={60} height={60} />
-                </div>
-                <ul className={styles.moviesList}>
-                    { (!data || error) ? defaultList : movieList }
-                </ul>
             </div>
         </div>
     )
