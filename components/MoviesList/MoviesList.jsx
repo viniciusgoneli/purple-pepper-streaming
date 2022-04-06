@@ -4,13 +4,27 @@ import defaultImage from './../../public/images/default-movie-img.jpg'
 import rightArrow from './../../public/icons/right-arrow.svg'
 import leftArrow from './../../public/icons/left-arrow.svg'
 import useSWR from 'swr';
+import { useRef } from 'react'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
+
+
 
 export default function MoviesList({ apiInfo, genreName, genreId }){
     const apiBaseUrl = apiInfo.apiBaseUrl;
     const apiKey = apiInfo.apiKey;
     const imgBaseUrl = apiInfo.imgBaseUrl;
+
+    const moviesSlider = useRef(null)
+    const slideOffset = 1000;
+
+    function rightArrowHandleClick(){
+        moviesSlider.current.style.left = moviesSlider.current.offsetLeft - slideOffset + 'px';
+    }
+
+    function leftArrowHandleClick(){
+        moviesSlider.current.style.left = moviesSlider.current.offsetLeft + slideOffset + 'px';
+    }
 
     const { data, error } = useSWR(
         `${apiBaseUrl}/discover/movie?api_key=${apiKey}&with_genres=${genreId}`,
@@ -39,13 +53,14 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
         <div className={styles.container}>
             <h2 className={styles.genreTitle}>{genreName}</h2>
             <div className={styles.moviesContainer}>
-                <div className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
-                        <Image layout='fixed' src={leftArrow} width={60} height={60} />
+                <div onClick={leftArrowHandleClick} className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
+                    <Image layout='fixed' src={leftArrow} width={60} height={60} />
                 </div>
-                <div className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
+                <div onClick={rightArrowHandleClick}
+                 className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
                     <Image layout='fixed' src={rightArrow} width={60} height={60} />
                 </div>
-                <div className={styles.moviesSlider}>
+                <div className={styles.moviesSlider} ref={moviesSlider}>
                     <ul className={styles.moviesList}>
                         { (!data || error) ? defaultList : movieList }
                     </ul>
