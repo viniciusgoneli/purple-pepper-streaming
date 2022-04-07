@@ -8,22 +8,21 @@ import { useRef } from 'react'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
-
-
 export default function MoviesList({ apiInfo, genreName, genreId }){
     const apiBaseUrl = apiInfo.apiBaseUrl;
     const apiKey = apiInfo.apiKey;
     const imgBaseUrl = apiInfo.imgBaseUrl;
 
-    const moviesSlider = useRef(null)
-    const slideOffset = 1000;
+    const moviesSliderRef = useRef(null)
+    const sliderItemWidth = 500;
+    const sliderOffset = 1000;
 
     function rightArrowHandleClick(){
-        moviesSlider.current.style.left = moviesSlider.current.offsetLeft - slideOffset + 'px';
+        moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft - sliderOffset + 'px';
     }
 
     function leftArrowHandleClick(){
-        moviesSlider.current.style.left = moviesSlider.current.offsetLeft + slideOffset + 'px';
+        moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft + sliderOffset + 'px';
     }
 
     const { data, error } = useSWR(
@@ -31,20 +30,19 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
         fetcher
     )
 
-    const defaultList = [];
-    for(let i=0; i < 9; i++){
-        defaultList.push(
-            <li key={i} className={styles.movie}>
-                <Image layout='fixed' src={defaultImage} width={500} height={500} />
+    const defaultList = data?.results.map((_, index) => {
+        return(
+            <li key={index} className={styles.movie}>
+                <Image layout='fixed' src={defaultImage} width={sliderItemWidth} height={sliderItemWidth} />
             </li>
         )
-    }
+    })
 
     const movieList = data?.results.map((movie, index) => {
         const imageSrc = `${imgBaseUrl}/w500${movie.poster_path}`
         return (
             <li key={index} className={styles.movie}>
-                <Image layout='fixed' src={imageSrc} width={500} height={500} />
+                <Image layout='fixed' src={imageSrc} width={sliderItemWidth} height={sliderItemWidth} />
             </li>
         )
     })
@@ -60,7 +58,7 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
                  className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
                     <Image layout='fixed' src={rightArrow} width={60} height={60} />
                 </div>
-                <div className={styles.moviesSlider} ref={moviesSlider}>
+                <div className={styles.moviesSlider} ref={moviesSliderRef}>
                     <ul className={styles.moviesList}>
                         { (!data || error) ? defaultList : movieList }
                     </ul>
