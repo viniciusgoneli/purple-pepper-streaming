@@ -19,7 +19,7 @@
     position: absolute;
     left: 4rem;
     top: 0;
-    transition: left 0.5s ease-out;
+    transition: left 0.35s ease-out;
 }
 
 .moviesList{
@@ -27,8 +27,8 @@
     list-style: none;
 }
 
-.movie{
-    margin-right: 1rem;
+.imageContainer{
+    padding-right: 1rem;
 }
 
 .arrowContainer{
@@ -37,7 +37,7 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.4);
     height: 100%;
-    z-index: 5;
+    z-index: 10;
     transition: background-color 0.2s;
 }
 
