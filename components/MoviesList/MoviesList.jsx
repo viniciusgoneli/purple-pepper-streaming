@@ -4,7 +4,7 @@ import defaultImage from './../../public/images/default-movie-img.jpg'
 import rightArrow from './../../public/icons/right-arrow.svg'
 import leftArrow from './../../public/icons/left-arrow.svg'
 import useSWR from 'swr';
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -17,12 +17,34 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
     const sliderItemWidth = 500;
     const sliderOffset = 1000;
 
+    let initialOffsetLeft;
+    let finalOffsetLeft;
+
+    useEffect(() => {
+        initialOffsetLeft = moviesSliderRef.current.offsetLeft;
+        finalOffsetLeft = (moviesSliderRef.current.offsetWidth - window.innerWidth) * -1;
+        
+        moviesSliderRef.current.ontransitionstart = _ => {
+            if(isMovieSliderOffsetLeftAt(initialOffsetLeft)){
+                moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
+            }
+            if(isMovieSliderOffsetLeftAt(finalOffsetLeft)){
+                moviesSliderRef.current.style.left = finalOffsetLeft + 'px';
+            }
+        }
+    })
+
     function rightArrowHandleClick(){
         moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft - sliderOffset + 'px';
     }
 
     function leftArrowHandleClick(){
         moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft + sliderOffset + 'px';
+    }
+
+    function isMovieSliderOffsetLeftAt(offsetLeft){
+        if(offsetLeft > 0) return moviesSliderRef.current.offsetLeft >= offsetLeft
+        return moviesSliderRef.current.offsetLeft <= offsetLeft;
     }
 
     const { data, error } = useSWR(
