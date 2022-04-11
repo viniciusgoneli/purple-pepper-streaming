@@ -15,7 +15,7 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
 
     const moviesSliderRef = useRef(null)
     const sliderItemWidth = 500;
-    const sliderOffset = 1000;
+    const sliderOffset = 850;
 
     function rightArrowHandleClick(){
         moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft - sliderOffset + 'px';
@@ -32,8 +32,10 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
 
     const defaultList = data?.results.map((_, index) => {
         return(
-            <li key={index} className={styles.movie}>
-                <Image layout='fixed' src={defaultImage} width={sliderItemWidth} height={sliderItemWidth} />
+            <li key={index}>
+                <div className={styles.imageContainer}>
+                    <Image layout='fixed' src={defaultImage} width={sliderItemWidth} height={sliderItemWidth} />
+                </div>
             </li>
         )
     })
@@ -41,8 +43,10 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
     const movieList = data?.results.map((movie, index) => {
         const imageSrc = `${imgBaseUrl}/w500${movie.poster_path}`
         return (
-            <li key={index} className={styles.movie}>
-                <Image layout='fixed' src={imageSrc} width={sliderItemWidth} height={sliderItemWidth} />
+            <li key={index}>
+                <div className={styles.imageContainer}>
+                    <Image layout='fixed' src={imageSrc} width={sliderItemWidth} height={sliderItemWidth} />
+                </div>
             </li>
         )
     })
@@ -54,8 +58,7 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
                 <div onClick={leftArrowHandleClick} className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
                     <Image layout='fixed' src={leftArrow} width={60} height={60} />
                 </div>
-                <div onClick={rightArrowHandleClick}
-                 className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
+                <div onClick={rightArrowHandleClick} className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
                     <Image layout='fixed' src={rightArrow} width={60} height={60} />
                 </div>
                 <div className={styles.moviesSlider} ref={moviesSliderRef}>
