@@ -4,7 +4,7 @@ import defaultImage from './../../public/images/default-movie-img.jpg'
 import rightArrow from './../../public/icons/right-arrow.svg'
 import leftArrow from './../../public/icons/left-arrow.svg'
 import useSWR from 'swr';
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -17,22 +17,34 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
     const sliderItemWidth = 500;
     const sliderOffset = 850;
 
-    let initialOffsetLeft;
-    let finalOffsetLeft;
+    let initialOffsetLeft
+
+    const [isRightArrowVisible, setIsRightArrowVisible] = useState(true);
+    const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false);
 
     useEffect(() => {
         initialOffsetLeft = moviesSliderRef.current.offsetLeft;
-        finalOffsetLeft = (moviesSliderRef.current.offsetWidth - window.innerWidth) * -1;
         
-        moviesSliderRef.current.ontransitionstart = _ => {
-            if(isMovieSliderOffsetLeftAt(initialOffsetLeft)){
-                moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
-            }
-            if(isMovieSliderOffsetLeftAt(finalOffsetLeft)){
-                moviesSliderRef.current.style.left = finalOffsetLeft + 'px';
-            }
+        moviesSliderRef.current.ontransitionstart = movieSliderTransitionHandler;
+        moviesSliderRef.current.ontransitionend = movieSliderTransitionHandler;
+    }, [])
+
+    function movieSliderTransitionHandler(){
+        const finalOffsetLeft = (moviesSliderRef.current.offsetWidth - window.innerWidth) * -1;
+
+        if(isMovieSliderOffsetLeftAt(initialOffsetLeft)){
+            setIsLeftArrowVisible(false);
+            moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
+            return;
         }
-    })
+        if(isMovieSliderOffsetLeftAt(finalOffsetLeft)){
+            setIsRightArrowVisible(false);
+            moviesSliderRef.current.style.left = finalOffsetLeft + 'px';
+            return;
+        }
+        setIsLeftArrowVisible(true);
+        setIsRightArrowVisible(true);
+    }
 
     function rightArrowHandleClick(){
         moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft - sliderOffset + 'px';
@@ -77,12 +89,20 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
         <div className={styles.container}>
             <h2 className={styles.genreTitle}>{genreName}</h2>
             <div className={styles.moviesContainer}>
-                <div onClick={leftArrowHandleClick} className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
-                    <Image layout='fixed' src={leftArrow} width={60} height={60} />
-                </div>
-                <div onClick={rightArrowHandleClick} className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
-                    <Image layout='fixed' src={rightArrow} width={60} height={60} />
-                </div>
+                { 
+                    isLeftArrowVisible ? 
+                        <div onClick={leftArrowHandleClick} className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
+                            <Image draggable={false} layout='fixed' src={leftArrow} width={60} height={60} />
+                        </div> :
+                    null 
+                }
+                {
+                    isRightArrowVisible ?
+                        <div onClick={rightArrowHandleClick} className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
+                        <Image draggable={false} layout='fixed' src={rightArrow} width={60} height={60} />
+                        </div> :
+                    null
+                }
                 <div className={styles.moviesSlider} ref={moviesSliderRef}>
                     <ul className={styles.moviesList}>
                         { (!data || error) ? defaultList : movieList }
