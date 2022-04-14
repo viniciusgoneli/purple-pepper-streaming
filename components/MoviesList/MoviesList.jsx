@@ -17,33 +17,43 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
     const sliderItemWidth = 500;
     const sliderOffset = 850;
 
-    let initialOffsetLeft
+    let initialOffsetLeft;
 
-    const [isRightArrowVisible, setIsRightArrowVisible] = useState(true);
-    const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false);
+    const [pageIndex, setPageIndex] = useState(1);
 
     useEffect(() => {
-        initialOffsetLeft = moviesSliderRef.current.offsetLeft;
-        
+        initialOffsetLeft = 40;
+        moviesSliderRef.current.style.transition = 'left 0.35s ease-out'
+
         moviesSliderRef.current.ontransitionstart = movieSliderTransitionHandler;
         moviesSliderRef.current.ontransitionend = movieSliderTransitionHandler;
-    }, [])
+    })
 
     function movieSliderTransitionHandler(){
         const finalOffsetLeft = (moviesSliderRef.current.offsetWidth - window.innerWidth) * -1;
+        const finalFetchPoint = finalOffsetLeft - sliderItemWidth;
+        const initialFetchPoint = initialOffsetLeft + sliderItemWidth;
 
-        if(isMovieSliderOffsetLeftAt(initialOffsetLeft)){
-            setIsLeftArrowVisible(false);
+        if(isMovieSliderOffsetLeftAt(initialFetchPoint)){
+            if(pageIndex > 1) {
+                moviesSliderRef.current.style.transition = 'none'
+                moviesSliderRef.current.style.left = finalOffsetLeft + 'px';
+
+                setPageIndex(--pageIndex);
+                return;
+            }
+
             moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
             return;
         }
-        if(isMovieSliderOffsetLeftAt(finalOffsetLeft)){
-            setIsRightArrowVisible(false);
-            moviesSliderRef.current.style.left = finalOffsetLeft + 'px';
+
+        if(isMovieSliderOffsetLeftAt(finalFetchPoint)){
+            moviesSliderRef.current.style.transition = 'none'
+            moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
+
+            setPageIndex(++pageIndex);
             return;
         }
-        setIsLeftArrowVisible(true);
-        setIsRightArrowVisible(true);
     }
 
     function rightArrowHandleClick(){
@@ -60,7 +70,7 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
     }
 
     const { data, error } = useSWR(
-        `${apiBaseUrl}/discover/movie?api_key=${apiKey}&with_genres=${genreId}`,
+        `${apiBaseUrl}/discover/movie?api_key=${apiKey}&with_genres=${genreId}&page=${pageIndex}`,
         fetcher
     )
 
@@ -89,20 +99,12 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
         <div className={styles.container}>
             <h2 className={styles.genreTitle}>{genreName}</h2>
             <div className={styles.moviesContainer}>
-                { 
-                    isLeftArrowVisible ? 
-                        <div onClick={leftArrowHandleClick} className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
-                            <Image draggable={false} layout='fixed' src={leftArrow} width={60} height={60} />
-                        </div> :
-                    null 
-                }
-                {
-                    isRightArrowVisible ?
-                        <div onClick={rightArrowHandleClick} className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
-                        <Image draggable={false} layout='fixed' src={rightArrow} width={60} height={60} />
-                        </div> :
-                    null
-                }
+                <div onClick={leftArrowHandleClick} className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
+                    <Image draggable={false} layout='fixed' src={leftArrow} width={60} height={60} />
+                </div>
+                <div onClick={rightArrowHandleClick} className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
+                    <Image draggable={false} layout='fixed' src={rightArrow} width={60} height={60} />
+                </div>
                 <div className={styles.moviesSlider} ref={moviesSliderRef}>
                     <ul className={styles.moviesList}>
                         { (!data || error) ? defaultList : movieList }
