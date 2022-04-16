@@ -1,5 +1,6 @@
 import styles from './../../styles/MoviesList.module.css'
 import Image from 'next/image'
+import MovieCard from './../MovieCard/MovieCard.jsx'
 import defaultImage from './../../public/images/default-movie-img.jpg'
 import rightArrow from './../../public/icons/right-arrow.svg'
 import leftArrow from './../../public/icons/left-arrow.svg'
@@ -88,9 +89,7 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
         const imageSrc = `${imgBaseUrl}/w500${movie.poster_path}`
         return (
             <li key={index}>
-                <div className={styles.imageContainer}>
-                    <Image layout='fixed' src={imageSrc} width={sliderItemWidth} height={sliderItemWidth} />
-                </div>
+                <MovieCard imageSrc={imageSrc} />
             </li>
         )
     })
