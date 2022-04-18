@@ -19,7 +19,6 @@ export default function Home(props) {
 export async function getStaticProps(){
 
   const apiBaseUrl = process.env.API_BASE_URL
-  const imgBaseUrl = process.env.API_IMG_BASE_URL;
   const apiKey = process.env.API_KEY;
 
   const genresResponse = await fetch(`${apiBaseUrl}/genre/movie/list?api_key=${apiKey}`);
@@ -29,8 +28,7 @@ export async function getStaticProps(){
     props: {
       apiInfo: {
         apiKey,
-        apiBaseUrl,
-        imgBaseUrl
+        apiBaseUrl
       },
       genresJson
     }
