@@ -1,0 +1,61 @@
+.movieCard {
+    margin-right: 1rem;
+    width: 500px;
+    height: 500px;
+    position: relative;
+}
+
+.posterImageContainer{
+    border-radius: 2.5rem;
+    margin: 0 auto;
+}
+
+.posterImage{
+    border-radius: 2.5rem;
+}
+
+.details {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, var(--color-primary), purple);
+    border-radius: 2.5rem;
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    transition: opacity 0.5s;
+}
+
+.details:hover {
+    opacity: 100;
+    cursor: pointer;
+}
+
+.detailsPosterImageContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.detailsPosterImage{
+    border-radius: 2.5rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0 1.5rem 0 1.5rem;
+}
+
+.description{
+    font-size: 1.5rem;
+    text-align: justify;
+    padding: 1.5rem;
+    overflow: hidden;
+    max-height: 80px;
+}
+
+

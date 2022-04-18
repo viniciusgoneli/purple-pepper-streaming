@@ -1,22 +1,21 @@
 import Image from 'next/image'
+import styles from './../../styles/MovieCard.module.css'
+import defaultImage from './../../public/images/default-movie-img.jpg';
 
-export default function MovieCard(props){
+export default function MovieCard({movie, slideWidth, slideHeight}){
+    const imageSrc = `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+
     return(
         <div className={styles.movieCard}>
             <div className={styles.posterImageContainer}>
-                <Image className={styles.posterImage} layout='fill' src={props.imageSrc} />
+                <Image className={styles.posterImage} src={imageSrc || defaultImage} width={slideWidth} height={slideHeight} />
             </div>
             <div className={styles.details}>
                 <div className={styles.detailsPosterImageContainer}>
-                    <Image className={styles.detailsPosterImage} layout='fill' src={props.imageSrc} />
+                    <Image className={styles.detailsPosterImage} src={imageSrc || defaultImage} width={300} height={350} />
                 </div>
-                <div>Progresso</div>
-                <h2>Homem aranha</h2>
-                <p>Descirção do filme</p>
-                <div className={styles.imdbAndButton}>
-                    <div className={styles.imdb}></div>
-                    <button className={styles.playButton}></button>
-                </div>
+                <h2 className={styles.title}>{ movie.title }</h2>
+                <p className={styles.description}>{ movie.overview }</p>
             </div>
         </div>
     )
