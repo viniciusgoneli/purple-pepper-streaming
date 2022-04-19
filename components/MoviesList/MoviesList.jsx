@@ -18,42 +18,40 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
     const slideWidth = 500;
     const slideHeight = 500;
 
-    let initialOffsetLeft;
+    let initialSliderOffsetLeft;
+    let initialSliderTransition;
 
     const [pageIndex, setPageIndex] = useState(1);
 
     useEffect(() => {
-        initialOffsetLeft = 40;
-        moviesSliderRef.current.style.transition = 'left 0.35s ease-out'
+        initialSliderOffsetLeft = moviesSliderRef.current.offsetLeft;
+        initialSliderTransition = getComputedStyle(moviesSliderRef.current).transition;
+        moviesSliderRef.current.style.transition = initialSliderTransition;
 
         moviesSliderRef.current.ontransitionstart = movieSliderTransitionHandler;
         moviesSliderRef.current.ontransitionend = movieSliderTransitionHandler;
-    })
+    }, [])
 
     function movieSliderTransitionHandler(){
         const finalOffsetLeft = (moviesSliderRef.current.offsetWidth - window.innerWidth) * -1;
         const finalFetchPoint = finalOffsetLeft - slideWidth;
-        const initialFetchPoint = initialOffsetLeft + slideWidth;
+        const initialFetchPoint = initialSliderOffsetLeft + slideWidth;
 
         if(isMovieSliderOffsetLeftAt(initialFetchPoint)){
             if(pageIndex > 1) {
-                moviesSliderRef.current.style.transition = 'none'
                 moviesSliderRef.current.style.left = finalOffsetLeft + 'px';
 
                 setPageIndex(--pageIndex);
                 return;
             }
 
-            moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
-            return;
+            moviesSliderRef.current.style.left = initialSliderOffsetLeft + 'px';
         }
 
         if(isMovieSliderOffsetLeftAt(finalFetchPoint)){
-            moviesSliderRef.current.style.transition = 'none'
-            moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
+            moviesSliderRef.current.style.left = initialSliderOffsetLeft + 'px';
 
             setPageIndex(++pageIndex);
-            return;
         }
     }
 
