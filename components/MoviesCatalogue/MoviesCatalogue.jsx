@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import MoviesList from '../MoviesList/MoviesList.jsx'
+import MovieDetailsDialog from './../MovieDetailsDialog/MovieDetailsDialog.jsx'
 
 export default function MoviesCatalogue(props){
-    const [isCardExpanded, setIsCardExpanded] = useState(false);
+    const [movie, setMovie] = useState(null);
 
     function onMovieListItemClick(movie){
-        setIsCardExpanded(true);
-        console.log('expanded')
+        setMovie(movie);
     }
 
     const genresJson = props.genresJson;
@@ -21,7 +21,7 @@ export default function MoviesCatalogue(props){
     })
     return(
         <>
-            {/* isCardExpanded ? <ExpandedMovieCard /> : null*/ }
+            { movie ? <MovieDetailsDialog movie={movie} /> : null }
             <section>
                 { genresList }
             </section>

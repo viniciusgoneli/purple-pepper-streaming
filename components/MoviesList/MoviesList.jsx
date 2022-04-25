@@ -78,7 +78,7 @@ export default function MoviesList({ apiInfo, genreName, genreId, onMovieListIte
     const movieList = data?.results.map((movie, index) => {
         return (
             <li key={index}>
-                <button className={styles.cardBtnWrapper} onClick={movie => onMovieListItemClick(movie)}>
+                <button className={styles.cardBtnWrapper} onClick={_ => onMovieListItemClick(movie)}>
                     <MovieCard movie={movie} slideWidth={slideWidth} slideHeight={slideHeight} />  
                 </button>
             </li>
