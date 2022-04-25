@@ -9,7 +9,7 @@ import { useRef, useEffect, useState } from 'react'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
-export default function MoviesList({ apiInfo, genreName, genreId }){
+export default function MoviesList({ apiInfo, genreName, genreId, onMovieListItemClick }){
     const apiBaseUrl = apiInfo.apiBaseUrl;
     const apiKey = apiInfo.apiKey;
 
@@ -78,7 +78,9 @@ export default function MoviesList({ apiInfo, genreName, genreId }){
     const movieList = data?.results.map((movie, index) => {
         return (
             <li key={index}>
-                <MovieCard movie={movie} slideWidth={slideWidth} slideHeight={slideHeight} />
+                <button className={styles.cardBtnWrapper} onClick={movie => onMovieListItemClick(movie)}>
+                    <MovieCard movie={movie} slideWidth={slideWidth} slideHeight={slideHeight} />  
+                </button>
             </li>
         )
     })

@@ -27,6 +27,11 @@
     list-style: none;
 }
 
+.cardBtnWrapper{
+    background-color: transparent;
+    border: none;
+}
+
 .imageContainer{
     padding-right: 1rem;
 }
