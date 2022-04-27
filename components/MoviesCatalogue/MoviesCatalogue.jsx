@@ -3,10 +3,17 @@ import MoviesList from '../MoviesList/MoviesList.jsx'
 import MovieDetailsDialog from './../MovieDetailsDialog/MovieDetailsDialog.jsx'
 
 export default function MoviesCatalogue(props){
+
     const [movie, setMovie] = useState(null);
+    const [isMovieDetailsDialogDisplayed, setIsMovieDetailsDialogDisplayed] = useState(false);
 
     function onMovieListItemClick(movie){
         setMovie(movie);
+        setIsMovieDetailsDialogDisplayed(true);
+    }
+
+    function closeMovieDetailsDialog(){
+        setIsMovieDetailsDialogDisplayed(false);
     }
 
     const genresJson = props.genresJson;
@@ -21,7 +28,10 @@ export default function MoviesCatalogue(props){
     })
     return(
         <>
-            { movie ? <MovieDetailsDialog movie={movie} /> : null }
+            { 
+                isMovieDetailsDialogDisplayed ? <MovieDetailsDialog movie={movie}
+                closeDialog={closeMovieDetailsDialog}/> : null
+            }
             <section>
                 { genresList }
             </section>

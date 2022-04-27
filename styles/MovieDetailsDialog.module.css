@@ -1,0 +1,68 @@
+.dialogRoot{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+.darkBackground {
+    position: absolute;
+    z-index: 200;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.dialogBackground {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: #9A01FF;
+    width: 70vw;
+    z-index: 210;
+}
+
+.closeButton {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+}
+
+.movieImage {
+    width: 100%;
+    height: 281px;
+    margin-bottom: 1rem;
+}
+
+.movieTitle {
+    color: white;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding: 0 2rem 0 2rem;
+}
+
+.movieOverview {
+    color: white;
+    font-size: 1.5rem;
+    padding: 0 1rem 0 1rem;
+    text-align: justify;
+    margin-bottom: 1rem;
+}
+
+.watchButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+}
+
+.watchButton {
+    width: 10rem;
+    height: 3rem;
+    border-radius: 5px;
+}
