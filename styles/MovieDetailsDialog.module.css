@@ -12,6 +12,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
+    animation: openingFade 0.25s;
 }
 
 .dialogBackground {
@@ -22,6 +23,7 @@
     background-color: #9A01FF;
     width: 70vw;
     z-index: 210;
+    animation: openingFade 0.25s;
 }
 
 .closeButton {
@@ -65,4 +67,14 @@
     width: 10rem;
     height: 3rem;
     border-radius: 5px;
+}
+
+@keyframes openingFade {
+    0% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
 }
