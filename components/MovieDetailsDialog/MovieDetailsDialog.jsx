@@ -35,9 +35,7 @@ export default function MovieDetailsDialog({ movie, closeDialog }){
         <div className={styles.dialogRoot} ref={dialogRoot}>
             <div className={styles.darkBackground} onClick={restaureDefaultAndCloseDialog}></div>
             <div className={styles.dialogBackground}>
-                <div className={styles.closeButton} onClick={restaureDefaultAndCloseDialog}>
-                    <button>X</button>
-                </div>
+                <button className={styles.closeButton} onClick={restaureDefaultAndCloseDialog}></button>
                 <img className={styles.movieImage} src={backdropImageSrc}/>
                 <h1 className={styles.movieTitle}>{ movie.title }</h1>
                 <p className={styles.movieOverview}>{ movie.overview }</p>
