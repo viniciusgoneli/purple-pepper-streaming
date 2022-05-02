@@ -68,6 +68,29 @@
     border: none;
 }
 
+.searchInputContainer{
+    display: flex;
+    justify-content: end;
+}
+
+.searchInput{
+    animation: openSearchInput 0.25s ease-out;
+    height: 3.6rem;
+    width: 200px;
+    padding-left: 10px;
+    border-radius: 15px;
+    border: none;
+}
+
+@keyframes openSearchInput {
+    0%{
+        width: 0px;
+    }
+    100%{
+        width: 200px;
+    }
+}
+
 .accountBtn{
     background-image: url('./../public/icons/person.svg');
     background-color: transparent;

@@ -1,6 +1,10 @@
 import styles from './../../styles/Navbar.module.css'
+import { useState } from 'react'
 
 export default function Navbar(){
+
+    const [isSearchInputOpen, setIsSearchInputOpen] = useState(false);
+
     return(
         <nav className={styles.navbar}>
             <div className={styles.leftContent}>
@@ -12,7 +16,16 @@ export default function Navbar(){
                 </ul>
             </div>
             <div className={styles.rightContent}>
-                <button className={`${styles.backgroundImage} ${styles.icon} ${styles.searchBtn}`}></button>
+                <button onClick={_ => setIsSearchInputOpen(!isSearchInputOpen)}
+                            className={`${styles.backgroundImage}
+                            ${styles.icon}
+                            ${styles.searchBtn}`} />
+                { 
+                    isSearchInputOpen ? 
+                    <div className={styles.searchInputContainer}>
+                        <input type={'text'} className={styles.searchInput} />
+                    </div> : null
+                }
                 <button className={`${styles.backgroundImage} ${styles.icon} ${styles.accountBtn}`}></button>
             </div>
         </nav>
