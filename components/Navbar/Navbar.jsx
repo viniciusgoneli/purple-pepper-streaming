@@ -1,9 +1,14 @@
 import styles from './../../styles/Navbar.module.css'
 import { useState } from 'react'
 
-export default function Navbar(){
+export default function Navbar({ setSearchQuery }){
 
     const [isSearchInputOpen, setIsSearchInputOpen] = useState(false);
+
+    function searchInputOnChangeHandler(e){
+        const query = e.currentTarget.value;
+        setSearchQuery(query);
+    }
 
     return(
         <nav className={styles.navbar}>
@@ -23,7 +28,7 @@ export default function Navbar(){
                 { 
                     isSearchInputOpen ? 
                     <div className={styles.searchInputContainer}>
-                        <input type={'text'} className={styles.searchInput} />
+                        <input onChange={searchInputOnChangeHandler} type={'text'} className={styles.searchInput} />
                     </div> : null
                 }
                 <button className={`${styles.backgroundImage} ${styles.icon} ${styles.accountBtn}`}></button>

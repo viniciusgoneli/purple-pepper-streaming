@@ -26,6 +26,12 @@ export default function MoviesCatalogue(props){
         apiInfo={props.apiInfo}
         onMovieListItemClick={onMovieListItemClick} />
     })
+
+    const searchList = <MoviesList genreName={`Because you've searched for '${props.query}'`}
+            apiInfo={props.apiInfo}
+            onMovieListItemClick={onMovieListItemClick}
+            searchQuery={props.searchQuery} />
+
     return(
         <>
             { 
@@ -33,7 +39,7 @@ export default function MoviesCatalogue(props){
                 closeDialog={closeMovieDetailsDialog}/> : null
             }
             <section>
-                { genresList }
+                { !props.searchQuery ? genresList : searchList }
             </section>
         </>
     )

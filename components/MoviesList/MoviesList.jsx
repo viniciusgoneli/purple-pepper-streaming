@@ -9,7 +9,7 @@ import { useRef, useEffect, useState } from 'react'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
-export default function MoviesList({ apiInfo, genreName, genreId, onMovieListItemClick }){
+export default function MoviesList({ apiInfo, genreName, genreId, onMovieListItemClick, searchQuery }){
     const apiBaseUrl = apiInfo.apiBaseUrl;
     const apiKey = apiInfo.apiKey;
 
@@ -29,6 +29,10 @@ export default function MoviesList({ apiInfo, genreName, genreId, onMovieListIte
         moviesSliderRef.current.ontransitionstart = movieSliderTransitionHandler;
         moviesSliderRef.current.ontransitionend = movieSliderTransitionHandler;
     })
+
+    useEffect(() => {
+        moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
+    }, [searchQuery])
 
     function movieSliderTransitionHandler(){
         const finalOffsetLeft = (moviesSliderRef.current.offsetWidth - window.innerWidth) * -1;
@@ -70,8 +74,12 @@ export default function MoviesList({ apiInfo, genreName, genreId, onMovieListIte
         return moviesSliderRef.current.offsetLeft <= offsetLeft;
     }
 
+    const url = !searchQuery 
+    ? `${apiBaseUrl}/discover/movie?api_key=${apiKey}&with_genres=${genreId}&page=${pageIndex}`
+    : `${apiBaseUrl}/search/movie?api_key=${apiKey}&page=${pageIndex}&query=${searchQuery}`;
+
     const { data } = useSWR(
-        `${apiBaseUrl}/discover/movie?api_key=${apiKey}&with_genres=${genreId}&page=${pageIndex}`,
+        url,
         fetcher
     )
 
