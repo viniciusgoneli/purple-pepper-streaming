@@ -27,7 +27,7 @@ export default function MoviesCatalogue(props){
         onMovieListItemClick={onMovieListItemClick} />
     })
 
-    const searchList = <MoviesList genreName={`Because you've searched for '${props.query}'`}
+    const searchList = <MoviesList genreName={`Because you've searched for '${props.searchQuery}'`}
             apiInfo={props.apiInfo}
             onMovieListItemClick={onMovieListItemClick}
             searchQuery={props.searchQuery} />
