@@ -1,7 +1,6 @@
 import styles from './../../styles/MoviesList.module.css'
 import Image from 'next/image'
 import MovieCard from './../MovieCard/MovieCard.jsx'
-import defaultImage from './../../public/images/default-movie-img.jpg'
 import rightArrow from './../../public/icons/right-arrow.svg'
 import leftArrow from './../../public/icons/left-arrow.svg'
 import useSWR from 'swr';
@@ -13,66 +12,9 @@ export default function MoviesList({ apiInfo, genreName, genreId, onMovieListIte
     const apiBaseUrl = apiInfo.apiBaseUrl;
     const apiKey = apiInfo.apiKey;
 
-    const moviesSliderRef = useRef(null)
-    const sliderOffset = 850;
-    const slideWidth = 500;
-    const slideHeight = 500;
-
-    let initialOffsetLeft;
-
     const [pageIndex, setPageIndex] = useState(1);
-
-    useEffect(() => {
-        initialOffsetLeft = 40;
-        moviesSliderRef.current.style.transition = 'left 0.35s ease-out'
-
-        moviesSliderRef.current.ontransitionstart = movieSliderTransitionHandler;
-        moviesSliderRef.current.ontransitionend = movieSliderTransitionHandler;
-    })
-
-    useEffect(() => {
-        moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
-    }, [searchQuery])
-
-    function movieSliderTransitionHandler(){
-        const finalOffsetLeft = (moviesSliderRef.current.offsetWidth - window.innerWidth) * -1;
-        const finalFetchPoint = finalOffsetLeft - slideWidth;
-        const initialFetchPoint = initialOffsetLeft + slideWidth;
-
-        if(isMovieSliderOffsetLeftAt(initialFetchPoint)){
-            if(pageIndex > 1) {
-                moviesSliderRef.current.style.transition = 'none'
-                moviesSliderRef.current.style.left = finalOffsetLeft + 'px';
-
-                setPageIndex(--pageIndex);
-                return;
-            }
-
-            moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
-            return;
-        }
-
-        if(isMovieSliderOffsetLeftAt(finalFetchPoint)){
-            moviesSliderRef.current.style.transition = 'none'
-            moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
-
-            setPageIndex(++pageIndex);
-            return;
-        }
-    }
-
-    function rightArrowHandleClick(){
-        moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft - sliderOffset + 'px';
-    }
-
-    function leftArrowHandleClick(){
-        moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft + sliderOffset + 'px';
-    }
-
-    function isMovieSliderOffsetLeftAt(offsetLeft){
-        if(offsetLeft > 0) return moviesSliderRef.current.offsetLeft >= offsetLeft
-        return moviesSliderRef.current.offsetLeft <= offsetLeft;
-    }
+    const [isSliderLeftArrowDisplayed, setIsSliderLeftArrowDisplayed] = useState(false);
+    const [isSliderRightArrowDisplayed, setIsSliderRightArrowDisplayed] = useState(true);
 
     const url = !searchQuery 
     ? `${apiBaseUrl}/discover/movie?api_key=${apiKey}&with_genres=${genreId}&page=${pageIndex}`
@@ -83,15 +25,89 @@ export default function MoviesList({ apiInfo, genreName, genreId, onMovieListIte
         fetcher
     )
 
+    const moviesSliderRef = useRef(null)
+
+    const sliderOffset = 850;
+    const slideWidth = 500;
+    const slideHeight = 500;
+
+    const firstPage = 1;
+    const lastPage = data?.total_pages;
+
+    let initialOffsetLeft;
+    let finalOffsetLeft;
+
+    useEffect(() => {
+        initialOffsetLeft = 40;
+        finalOffsetLeft = ((moviesSliderRef.current.offsetWidth - window.innerWidth) * -1) - 40;
+
+        moviesSliderRef.current.ontransitionstart = _ => onTransitionSliderHandler()
+        moviesSliderRef.current.ontransitionend = _ => onTransitionSliderHandler()
+    })
+
+    useEffect(() => {
+        moviesSliderRef.current.style.left = initialOffsetLeft + 'px';
+    }, [searchQuery])
+
+    function onTransitionSliderHandler(){
+
+        if(isMovieSliderOffsetLeftAt(initialOffsetLeft)){
+            moviesSliderRef.current.style.left = initialOffsetLeft + 'px';   
+            if(pageIndex === firstPage) setIsSliderLeftArrowDisplayed(false);
+            return;
+        }
+        if(isMovieSliderOffsetLeftAt(finalOffsetLeft)){
+            moviesSliderRef.current.style.left = finalOffsetLeft + 'px';  
+            if(pageIndex === lastPage) setIsSliderRightArrowDisplayed(false);
+            return; 
+        }
+
+        setIsSliderLeftArrowDisplayed(true);
+        setIsSliderRightArrowDisplayed(true);
+    }
+
+    function rightArrowHandleClick(){
+        moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft - sliderOffset + 'px';
+
+        if(isMovieSliderOffsetLeftAt(finalOffsetLeft) && pageIndex < lastPage){
+            setPageIndex(++pageIndex);
+            moviesSliderRef.current.style.left = initialOffsetLeft + 'px';           
+        }
+    }
+
+    function leftArrowHandleClick(){
+        moviesSliderRef.current.style.left = moviesSliderRef.current.offsetLeft + sliderOffset + 'px';
+
+        if(isMovieSliderOffsetLeftAt(initialOffsetLeft) && pageIndex > firstPage){
+            setPageIndex(--pageIndex);
+            moviesSliderRef.current.style.left = finalOffsetLeft + 'px';           
+        }
+    }
+
+    function isMovieSliderOffsetLeftAt(offsetLeft){
+        if(offsetLeft > 0) return moviesSliderRef.current.offsetLeft >= offsetLeft
+        return moviesSliderRef.current.offsetLeft <= offsetLeft;
+    }
+
     const movieList = data?.results.map((movie, index) => {
         return (
             <li key={index}>
-                <button className={styles.cardBtnWrapper} onClick={_ => onMovieListItemClick(movie)}>
+                <div className={styles.cardBtnWrapper} onClick={_ => onMovieListItemClick(movie)}>
                     <MovieCard movie={movie} slideWidth={slideWidth} slideHeight={slideHeight} />  
-                </button>
+                </div>
             </li>
         )
     })
+
+    const sliderLeftArrow = 
+    <div onClick={leftArrowHandleClick} className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
+        <Image draggable={false} layout='fixed' src={leftArrow} width={60} height={60} />
+    </div>
+
+    const sliderRightArrow = 
+    <div onClick={rightArrowHandleClick} className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
+        <Image draggable={false} layout='fixed' src={rightArrow} width={60} height={60} />
+    </div>
 
     return(
         <div className={styles.container}>
@@ -102,12 +118,8 @@ export default function MoviesList({ apiInfo, genreName, genreId, onMovieListIte
                         { movieList }
                     </ul>
                 </div>
-                <div onClick={leftArrowHandleClick} className={`${styles.arrowContainer} ${styles.leftArrowContainer}`}>
-                    <Image draggable={false} layout='fixed' src={leftArrow} width={60} height={60} />
-                </div>
-                <div onClick={rightArrowHandleClick} className={`${styles.arrowContainer} ${styles.rightArrowContainer}`}>
-                    <Image draggable={false} layout='fixed' src={rightArrow} width={60} height={60} />
-                </div>
+                { isSliderLeftArrowDisplayed ? sliderLeftArrow : null}
+                { isSliderRightArrowDisplayed ? sliderRightArrow : null }
             </div>
         </div>
     )
